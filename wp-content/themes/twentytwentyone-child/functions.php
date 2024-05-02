@@ -22,3 +22,22 @@ endif;
 add_action( 'wp_enqueue_scripts', 'child_theme_configurator_css', 10 );
 
 // END ENQUEUE PARENT ACTION
+add_action('wp_ajax_my_submit_log_action', 'my_submit_log_action');
+add_action('wp_ajax_nopriv_my_submit_log_action', 'my_submit_log_action');
+function my_submit_log_action(){
+    global $wpdb;
+$to = $_POST['email_id'];
+$subject = 'Invite Email';
+$headers = "MIME-Version: 1.0" . "\r\n";
+$headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+$message = 'Hi '.$to;
+$message .= 'This is a Invite email sent from WordPress Admin. Please click on this <a href="'.site_url().'/register/?inviteuser='.base64_encode($to).'">link</a> and complete your registration process.';
+// send email
+$mail_sent=wp_mail($to,$subject,$message,$headers);
+    if($mail_sent){
+        echo 'mail sent succesfully';
+    }else{
+        echo 'mail not sent';
+    }
+    die;
+}

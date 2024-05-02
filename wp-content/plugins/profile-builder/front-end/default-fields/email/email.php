@@ -25,9 +25,12 @@ function wppb_email_handler( $output, $form_location, $field, $user_id, $field_c
 
         $email_input_status = !current_user_can( 'manage_options' ) ? apply_filters( 'wppb_set_input_status', '' ) : '';
 
-        $output = '
-			<label for="email">'.$item_title.$error_mark.'</label>
-			<input class="text-input default_field_email '. apply_filters( 'wppb_fields_extra_css_class', '', $field ) .'" name="email" maxlength="'. apply_filters( 'wppb_maximum_character_length', 70, $field ) .'" type="email" id="email" value="'. esc_attr( $input_value ) .'" '. $extra_attr .' '. (( $form_location != 'register' ) ? $email_input_status : '') .' />';
+        $output = '<label for="email">'.$item_title.$error_mark.'</label>';
+		 if(isset($_GET['inviteuser'])){
+        $output .=  '<input class="text-input default_field_email '. apply_filters( 'wppb_fields_extra_css_class', '', $field ) .'" name="email" maxlength="'. apply_filters( 'wppb_maximum_character_length', 70, $field ) .'" type="email" id="email" value="'. isset($_GET['inviteuser'])? base64_decode($_GET['inviteuser']) : esc_attr( $input_value ) .'" '. $extra_attr .' '. (( $form_location != 'register' ) ? $email_input_status : '') .'readonly/>';
+    }else{
+        $output .=  '<input class="text-input default_field_email '. apply_filters( 'wppb_fields_extra_css_class', '', $field ) .'" name="email" maxlength="'. apply_filters( 'wppb_maximum_character_length', 70, $field ) .'" type="email" id="email" value="'. esc_attr( $input_value ) .'" '. $extra_attr .' '. (( $form_location != 'register' ) ? $email_input_status : '') .'/>';
+    }
         if( !empty( $item_description ) )
             $output .= '<span class="wppb-description-delimiter">'. $item_description .'</span>';
 
