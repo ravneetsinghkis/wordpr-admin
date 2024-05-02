@@ -45,7 +45,9 @@ button.btn.btn-primary.me-2 {
      email_id: $('#email_id').val()
   }
   $.post( "<?php echo admin_url('admin-ajax.php'); ?>", pdata, function( data ) {
-       $( ".result" ).html( data );
+       var response=JSON.parse(data);
+    console.log(response.message);
+       alert(response.message);
   });
  })
    
